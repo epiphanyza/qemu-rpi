@@ -1,6 +1,27 @@
 qemu-rpi (c) 2012 Gregory Estrade, licensed under the GNU GPLv2 and later.
 
 ================================================================================
+*** Update 01/05/2013
+================================================================================
+Happy new year!
+For the first release of the year, I'm glad to announce that due to some work
+performed on the framebuffer, VC->ARM property mailbox and the eMMC SDHC host,
+RiscOS is now booting fine!
+
+I though I could keep my patches separated from QEMU source code, but it turned
+out that I was wrong. Some features are lacking in the current ARM1176 emulation
+so I had to patch some QEMU files to add some of them.
+
+So, from now, USE THIS instead:
+
+********************************************************************************
+https://github.com/Torlus/qemu/tree/rpi
+********************************************************************************
+
+However, I'll keep this README file up to date, with the latest news on this
+project's progress.
+
+================================================================================
 *** Update 12/23/2012
 ================================================================================
 Since the QEMU include structure has changed a few days ago, please use the
@@ -41,19 +62,16 @@ Installation instructions
 Preparing QEMU:
 - Make sure you can compile and run QEMU according to the instructions provided
   by http://xecdesign.com/compiling-qemu/
-- Copy the *.c and *.h files of this project into the qemu/hw/ subfolder.
-- Edit the qemu/hw/arm/Makefile.objs file and add the following line:
-
-obj-y += raspi.o bcm2835_ic.o bcm2835_st.o bcm2835_sbm.o bcm2835_power.o \
-                bcm2835_fb.o bcm2835_property.o bcm2835_vchiq.o \
-                bcm2835_emmc.o bcm2835_dma.o bcm2835_todo.o
-
-  near the end of the file.
+- Use https://github.com/Torlus/qemu/tree/rpi instead of the official QEMU
+  repository. 
 - Recompile and reinstall QEMU.
 
-Preparing Linux:
-- From a working SD image, extract the kernel image from the FAT32 partition.
-  On Raspbian wheezy SD image, it is the "kernel.img" file.
+================================================================================
+Running Linux
+================================================================================
+
+From a working SD image, extract the kernel image from the FAT32 partition.
+On Raspbian wheezy SD image, it is the "kernel.img" file.
 
 Now run QEMU using the following command (warning, long line) :
 
@@ -89,4 +107,19 @@ Here are some explanations about the parameters provided to the Linux kernel :
   to be the reason why. If someone has an explanation, I'd be glad to hear it. :)
 
 ================================================================================
-Gregory Estrade, 12/22/2012
+Running RiscOS
+================================================================================
+
+- Read the "Running Linux" section.
+- Extract the RISCOS.IMG from the FAT32 partition of your SD card.
+
+Now run QEMU using the following command (warning, long line) :
+/path/to/qemu-system-arm -kernel RISCOS.IMG -initrd RISCOS.IMG -cpu arm1176 -m 512 -M raspi -snapshot -sd ro519-rc6-1876M.img -d guest_errors -serial stdio
+
+You may have noticed the weird "-kernel" and "-initrd" stuff, both pointing to
+the same file. This is a quick and dirty hack to activate the bootloader
+emulation. If you do this with Linux, it won't boot as the "-append" parameters
+won't be passed to the kernel, which requires them.
+
+================================================================================
+Gregory Estrade, 01/05/2013
