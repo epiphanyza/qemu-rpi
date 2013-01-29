@@ -1,4 +1,28 @@
-qemu-rpi (c) 2012 Gregory Estrade, licensed under the GNU GPLv2 and later.
+qemu-rpi (c) 2012-2013 Gregory Estrade, licensed under the GNU GPLv2 and later.
+
+This README file is only there to keep a track of the project's progress.
+
+To get the actual project files, see :
+https://github.com/Torlus/qemu/tree/rpi
+
+================================================================================
+*** Update 01/29/2013
+================================================================================
+Added a very alpha version of the USB controller emulation.
+On Linux, keyboard support works fine, mouse support... not so much (if at all).
+And unfortunately, it prevents RiscOS to boot properly. :(
+
+On latest official Debian images, you will have to disable sound, as it is not
+currently emulated, and worse, not doing it will cause a kernel Oops whenever 
+sound is requested (you will encounter it by starting X-Window, for instance).
+To do so, remove the "-snapshot" from the QEMU command line (so you will not
+lose your changes), log into the system and (as root) comment out the 
+"snd-bcm2835" line in /etc/modules. Restart the system, and you're done.
+
+Here is the new command line:
+/path/to/qemu-system-arm -kernel kernel.img -cpu arm1176 -m 512 -M raspi -no-reboot -serial stdio -append "rw earlyprintk loglevel=8 panic=120 keep_bootcon rootwait dma.dmachans=0x7f35 bcm2708_fb.fbwidth=1024 bcm2708_fb.fbheight=768 bcm2708.boardrev=0xf bcm2708.serial=0xcad0eedf smsc95xx.macaddr=B8:27:EB:D0:EE:DF sdhci-bcm2708.emmc_clock_freq=100000000 vc_mem.mem_base=0x1c000000 vc_mem.mem_size=0x20000000  dwc_otg.lpm_enable=0 kgdboc=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait" -sd 2012-12-16-wheezy-raspbian.img -device usb-kbd -device usb-mouse
+
+See below for more information about the general setup.
 
 ================================================================================
 *** Update 01/05/2013
@@ -11,12 +35,6 @@ RiscOS is now booting fine!
 I though I could keep my patches separated from QEMU source code, but it turned
 out that I was wrong. Some features are lacking in the current ARM1176 emulation
 so I had to patch some QEMU files to add some of them.
-
-So, from now, USE THIS instead:
-
-********************************************************************************
-https://github.com/Torlus/qemu/tree/rpi
-********************************************************************************
 
 However, I'll keep this README file up to date, with the latest news on this
 project's progress.
