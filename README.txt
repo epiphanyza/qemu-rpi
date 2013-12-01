@@ -6,6 +6,12 @@ To get the actual project files, see :
 https://github.com/Torlus/qemu/tree/rpi
 
 ================================================================================
+*** Update 12/01/2013
+================================================================================
+We're currently working on a proper patch, that would hopefully be compatible
+with QEMU's coding conventions.
+
+================================================================================
 *** Update 01/29/2013
 ================================================================================
 Added a very alpha version of the USB controller emulation.
