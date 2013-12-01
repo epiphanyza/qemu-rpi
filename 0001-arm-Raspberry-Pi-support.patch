@@ -33,8 +33,6 @@ and squashed the following commits:
 Upstreaming code cleaning by Jan Petrous <jan.petrous@tieto.com>.
 
 Signed-off-by: Gregory Estrade <gregory.estrade@gmail.com>
-Signed-off-by: Jan Petrous <jan.petrous@tieto.com>
-Signed-off-by: Stefan Weil <sw@weilnetz.de>
 ---
  hw/arm/Makefile.objs         |    5 +
  hw/arm/bcm2835_arm_control.h |  481 +++++++++++++++++++
